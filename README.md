@@ -32,6 +32,13 @@ built on ESP32 with Firebase as backend.
 3. Data pushed to Firebase Realtime Database in real time
 4. Local web dashboard reads Firebase and renders position on map using Leaflet.js
 
+## Setup
+1. Create a Firebase Realtime Database
+2. Replace `YOUR_FIREBASE_DATABASE_URL` in `index.html` with your database URL
+3. Copy `src/config.h.example` to `src/config.h` and fill in your credentials
+4. Flash `src/main.cpp` to your ESP32 using PlatformIO
+5. Open `index.html` in your browser
+
 ## Built With
 - PlatformIO
 - Firebase Realtime Database

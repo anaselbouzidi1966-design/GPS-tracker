@@ -20,7 +20,7 @@ built on ESP32 with Firebase as backend.
 | GPS Module | NEO-6M |
 
 ## Wiring
-![Hardware & Wiring](assets/hardware.jpg)
+![Hardware & Wiring](assets/wiring gps module.jpg)
 
 ## Libraries Used
 - [TinyGPSPlus](https://github.com/mikalhart/TinyGPSPlus) — GPS data parsing

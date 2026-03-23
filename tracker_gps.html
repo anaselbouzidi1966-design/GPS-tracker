@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Live GPS Tracker</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      #map {
+        height: 500px;
+        width: 100%;
+        border-radius: 10px;
+      }
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding: 20px;
+        background: #f4f4f4;
+      }
+      .stats {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .box {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🛰️ Live GPS Tracker</h1>
+
+    <div class="stats">
+      <div class="box"><b>Speed:</b> <span id="speed">0</span> km/h</div>
+      <div class="box"><b>Satellites:</b> <span id="sats">0</span></div>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+      // 1. Firebase Configuration
+      const firebaseConfig = {
+        databaseURL: "YOUR_FIREBASE_DATABASE_URL",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+
+      // 2. Initialize the Map (Centered at 0,0 initially)
+      var map = L.map("map").setView([0, 0], 2);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap",
+      }).addTo(map);
+
+      var marker = L.marker([0, 0]).addTo(map);
+
+      // 3. Listen for changes in Firebase
+      const gpsRef = database.ref("Tracker");
+      gpsRef.on("value", (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          const lat = data.Latitude;
+          const lng = data.Longitude;
+          const speed = data.Speed || 0;
+          const sats = data.Satellites || 0;
+
+          // Update Stats
+          document.getElementById("speed").innerText = speed.toFixed(2);
+          document.getElementById("sats").innerText = sats;
+
+          // Update Map Marker and Position
+          const newPos = [lat, lng];
+          marker.setLatLng(newPos);
+          map.setView(newPos, 15); // Zoom level 15
+        }
+      });
+    </script>
+  </body>
+</html>

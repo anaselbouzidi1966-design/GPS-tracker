@@ -1,0 +1,6 @@
+#pragma once
+
+#define WIFI_SSID "your_wifi"
+#define WIFI_PASSWORD "your_password"
+#define FIREBASE_HOST "your_firebase_host"
+#define FIREBASE_AUTH "your_firebase_auth"
